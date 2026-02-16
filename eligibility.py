@@ -32,8 +32,8 @@ is_veteran = veteran_input == 'j'
 #nosacījumi
 can_vote = age >=18
 can_rent = age >=21 and has_license
-sen_discount = age >= 65 and is_veteran
-stu_discount = age >= 16 and age <= 26 and is_student
+sen_discount = age >= 65 or is_veteran
+stu_discount = 16 <= age <= 26 and is_student
 
 #rezultati
 print(f"{'Balsošana:':<20} {'Jā' if can_vote else 'Nē'}")
