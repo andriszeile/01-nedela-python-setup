@@ -68,6 +68,44 @@ students['Jānis'] = 87
 #maina studenta atzīmi
 students['Aigars'] = 79
 
-#izvada visus studentus
+#izvada visus studentus sadalot pa pāriem (atslēga, vērtība)
 for name, grade in students.items():
     print(f'{name}: {grade}')
+
+#atrod labāko studentu
+best_name = ''
+best_grade = -1 #
+for name, grade in students.items():
+    if grade > best_grade:
+        best_grade = grade
+        best_name = name
+print(f'Labākais students: {best_name} ar {best_grade} ballēm.')
+
+
+print('\nC daļa - Kombinācija')
+print('Studenti ar atzīmi >= 80')
+#saraksts ar vārdnīcām
+student_list = [
+    {'name': 'Juris', 'grade': 89},
+    {'name': 'Aigars', 'grade': 79},
+    {'name': 'Inese', 'grade': 97},
+    {'name': 'Jānis', 'grade': 87},
+    {'name': 'Olga', 'grade': 94}
+]
+
+#izvelk vārdus un atzīmes, ja atzīme >=80
+#atsevišķos sarakstos lai ar zip() var;ētu tos apvienot
+names = []
+grades = []
+for el in student_list:
+    if el['grade'] >= 80:
+        names.append(el['name'])
+        grades.append(el['grade'])
+#parāda izveidotos sarakstus
+print(names)
+print(grades)
+#izmantojot dubulto izpakošanu
+#apvieno sarakstus ar zip() un numurē ar enumerate()
+for i, (name, grade) in enumerate(zip(names, grades), start = 1):
+    print(f'{i}. {name} - {grade}')
+
