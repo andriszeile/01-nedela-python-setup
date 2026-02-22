@@ -14,7 +14,7 @@ def is_email(text):
         text: e-pasta adrese kā virkne
 
     Returns:
-        bool: True, ja izskatās pēc e-pasta; citādi False
+        bool: True, ja izskatās pēc e-pasta; citādi - False
 
     Example:
         >>> is_email('anna@inbox.lv')
@@ -48,7 +48,7 @@ def is_phone_number(text):
         text: telefona numurs kā virkne
 
     Returns:
-        bool: True, ja atbilst formātam; citādi False
+        bool: True, ja atbilst formātam; citādi - False
 
     Example:
         >>> is_phone_number('+371 26123456')
@@ -81,7 +81,7 @@ def is_valid_age(age):
         age: vecums (parasti int)
 
     Returns:
-        bool: True, ja vecums korekts; citādi False
+        bool: True, ja vecums korekts; citādi - False
 
     Example:
         >>> is_valid_age(18)
@@ -101,7 +101,7 @@ def is_strong_password(text):
         text: parole kā virkne
 
     Returns:
-        bool: True, ja parole atbilst; citādi False
+        bool: True, ja parole atbilst; citādi - False
 
     Example:
         >>> is_strong_password('abc12345')
@@ -127,7 +127,7 @@ def is_valid_date(text):
         text: datums kā virkne (YYYY-MM-DD)
 
     Returns:
-        bool: True, ja datums izskatās korekts; citādi False
+        bool: True, ja datums izskatās korekts; citādi - False
 
     Example:
         >>> is_valid_date('2026-02-21')

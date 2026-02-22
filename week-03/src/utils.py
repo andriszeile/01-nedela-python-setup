@@ -72,7 +72,7 @@ def truncate(text, max_len=20):
         ValueError: max_len jābūt >= 0
 
     Example:
-        >>> truncate("Sveika pasaule", 8)
+        >>> truncate('Sveika pasaule', 8)
         'Sveik...'
     '''
     _validate_string(text)
@@ -261,7 +261,7 @@ def average(numbers, default=None):
 
 def total_args(*numbers):
     '''
-    Aprēķina summu no mainīga skaita skaitļu (*args).
+    Aprēķina summu no mainīga skaita skaitļiem (*args).
 
     Args:
         *numbers: skaitļi
@@ -284,7 +284,7 @@ def total_args(*numbers):
 
 # Demonstrācija
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     print(capitalize('labas dienas'))
     print(truncate('Šis ir garais teksts apgriešanai', 10))
     print(count_words('Šos vārdus skaita'))
