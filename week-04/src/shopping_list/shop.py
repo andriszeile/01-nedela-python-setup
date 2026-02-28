@@ -14,29 +14,52 @@ def how_usage() -> None:
 
 def cmd_add(argv: list[str]) -> None:
     '''
-    Pievieno produktu iepirkumu sarakstam.
+    Pievieno produktu ar daudzumu un cenu par vienību.
 
     Args:
         argv (list[str]):
             Komandrindas argumenti.
+            argv[2] - produkta nosaukums (str)
+            argv[3] - daudums (int, >0)
+            argv[4] - daudzums (float, > 0)
 
     Returns:
         None
+    
+    Raises:
+        ValueError:
+            Kļūda, daudzums ir vesels pozitīvs skaitlis.
+            Kļūda: cena jābūt pozitīvam skaitlim.
     '''
 
-    if len(argv) != 4:
-        print('Kļūda: add nepieciešami 2 argumenti — nosaukums un cena.')
+    if len(argv) != 5:
+        print('Kļūda: add nepieciešami 3 argumenti — nosaukums, daudzums un cena.')
         return
-    name = argv[2].strip().capitalize()
+    name = ' '.join(argv[2].strip()).capitalize()
     try:
-        price = float(argv[3])
+        qty = int(argv[3])
+        if qty <=0:
+            raise ValueError
     except ValueError:
-        print('Kļūda: cena jābūt skaitlim.')
+        print('Kļūda, daudzums ir vesels pozitīvs skaitlis.')
+        return
+    try:
+        price = float(argv[4])
+        if price <= 0:
+            raise ValueError
+    except ValueError:
+        print('Kļūda: cena jābūt pozitīvam skaitlim.')
         return
     items = load_list()
-    items.append({'name': name, 'price': round(price, 2)})
+    item = {
+        'name': name,
+        'qty': qty,
+        'price': round(price, 2)
+    }
+    items.append(item)
     save_list(items)
-    print(f'Pievienots: {name} ({price:.2f} EUR)')
+    line_total = calc_line_total(item)
+    print(f'Pievienots: {name} * {qty} ({price:.2f} EUR/gab.) = {line_total:.2f} EUR')
 
 def cmd_list() -> None:
     '''
