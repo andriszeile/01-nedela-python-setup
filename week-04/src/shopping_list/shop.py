@@ -20,7 +20,7 @@ def cmd_add(argv: list[str]) -> None:
         argv (list[str]):
             Komandrindas argumenti.
             argv[2] - produkta nosaukums (str)
-            argv[3] - daudums (int, >0)
+            argv[3] - daudzums (int, >0)
             argv[4] - daudzums (float, > 0)
 
     Returns:
@@ -72,7 +72,12 @@ def cmd_list() -> None:
         print('saraksts tukšs')
         return
     for i, item in enumerate(items, start=1):
-        print(f'  {i}. {item["name"]} — {item["price"]:.2f} EUR')
+        line_total = calc_line_total(item)
+        print(
+            f'  {i}. {item["name"]} * {item['qty']} — '
+            f'{item["price"]:.2f} EUR/gab. - '
+            f'{line_total:.2f} EUR'
+            )
 
 def cmd_total() -> None:
     '''
