@@ -1,5 +1,6 @@
 import sys
 from storage import load_list, save_list
+from utils import calc_line_total, calc_grand_total, count_units
 
 def how_usage() -> None:
     '''
