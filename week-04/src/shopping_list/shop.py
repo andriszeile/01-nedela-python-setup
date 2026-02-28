@@ -35,7 +35,7 @@ def cmd_add(argv: list[str]) -> None:
     if len(argv) != 5:
         print('Kļūda: add nepieciešami 3 argumenti — nosaukums, daudzums un cena.')
         return
-    name = ' '.join(argv[2].strip()).capitalize()
+    name = argv[2].split().capitalize()
     try:
         qty = int(argv[3])
         if qty <=0:
