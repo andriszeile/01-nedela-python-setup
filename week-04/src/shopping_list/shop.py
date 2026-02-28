@@ -85,8 +85,9 @@ def cmd_total() -> None:
     '''
 
     items = load_list()
-    total = sum(item['price'] for item in items)
-    print(f'Kopā: {total:.2f} EUR ({len(items)} produkti)')
+    total = calc_grand_total(items)
+    units = count_units(items)
+    print(f'Kopā: {total:.2f} EUR, ({units} vienības, {len(items)} produkti)')
 
 def cmd_clear() -> None:
     '''
