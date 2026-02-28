@@ -63,7 +63,10 @@ def cmd_add(argv: list[str]) -> None:
 
 def cmd_list() -> None:
     '''
-    Izdrukā visu iepirkumu sarakstu.
+    Izdrukā visu iepirkumu sarakstu ar:
+        - daudzumu
+        - cenu par vienību
+        - rindas kopējo summu
     '''
     
     items = load_list()
@@ -81,7 +84,10 @@ def cmd_list() -> None:
 
 def cmd_total() -> None:
     '''
-    Aprēķina kopējo iepirkumu summu.
+    Aprēķina kopējo un izdrukā kopējo:
+        - summu
+        - vienību skaitu
+        - produktu skaitu
     '''
 
     items = load_list()
