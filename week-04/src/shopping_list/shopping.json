@@ -1,17 +1,17 @@
 [
   {
     "name": "Kafija",
+    "qty": 1,
+    "price": 4.5
+  },
+  {
+    "name": "Kafija",
     "qty": 2,
-    "price": 2.54
+    "price": 4.5
   },
   {
     "name": "Kafija",
     "qty": 1,
-    "price": 2.54
-  },
-  {
-    "name": "Kafija",
-    "qty": 4,
-    "price": 4.95
+    "price": 4.5
   }
 ]

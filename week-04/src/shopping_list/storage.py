@@ -2,6 +2,14 @@ import json, os
 
 PRICES_FILE = "prices.json"
 
+def normalize_key(name: str) -> str:
+    '''
+    Normalizē produkta nosaukumu cenu datubāzes atslēgai:
+    - noņem liekās atstarpes
+    - padara visus burtus mazus (lower)
+    '''
+    return ' '.join(name.split()).lower()
+
 def load_prices() -> dict[str, float]:
     '''
     Nolasa cenu datubāzi no prices.json.
@@ -14,8 +22,11 @@ def load_prices() -> dict[str, float]:
     if not os.path.exists(PRICES_FILE):
         return {}
     with open(PRICES_FILE, 'r', encoding='utf-8') as f:
-        return json.load(f)
-
+        raw = json.load(f)
+    normalized = {}
+    for k, v in raw.items():
+        normalized[normalize_key(k)] = round(float(v), 2)
+    return normalized
 
 def save_prices(prices: dict[str, float]) -> None:
     '''
@@ -44,7 +55,7 @@ def get_price(name: str) -> float | None:
     '''
     
     prices = load_prices()
-    return prices.get(name)
+    return prices.get(normalize_key(name))
 
 
 def set_price(name: str, price: float) -> None:
@@ -60,7 +71,7 @@ def set_price(name: str, price: float) -> None:
     '''
     
     prices = load_prices()
-    prices[name] = round(float(price), 2)
+    prices[normalize_key(name)] = round(float(price), 2)
     save_prices(prices)
 
 
