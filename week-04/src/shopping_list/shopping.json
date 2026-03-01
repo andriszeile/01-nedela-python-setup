@@ -1,22 +1,17 @@
 [
   {
     "name": "Kafija",
-    "qty": 5,
-    "price": 7.93
-  },
-  {
-    "name": "Tēja",
-    "qty": 4,
-    "price": 3.25
-  },
-  {
-    "name": "Piens",
     "qty": 2,
-    "price": 1.34
+    "price": 2.54
   },
   {
-    "name": "Jogurts",
+    "name": "Kafija",
     "qty": 1,
-    "price": 2.1
+    "price": 2.54
+  },
+  {
+    "name": "Kafija",
+    "qty": 4,
+    "price": 4.95
   }
 ]

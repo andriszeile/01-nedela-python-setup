@@ -1,5 +1,5 @@
 import sys
-from storage import load_list, save_list
+from storage import load_list, save_list, get_price, set_price
 from utils import calc_line_total, calc_grand_total, count_units
 
 def how_usage() -> None:
@@ -11,6 +11,61 @@ def how_usage() -> None:
     print('python shop.py list')
     print('python shop.py total')
     print('python shop.py clear')
+
+def parse_positive_float(value: str) -> float:
+    '''
+    Pārvērš tekstu par pozitīvu float (cenu).
+
+    Raises:
+        ValueError:
+            Cenai jābūt skaitlim (piem., 1.25).
+            Cenai jābūt pozitīvai (> 0).
+    '''
+
+    try:
+        x = float(value)
+    except ValueError:
+        raise ValueError('Cenai jābūt skaitlim (piem., 1.25).')
+    if x <= 0:
+        raise ValueError('Cenai jābūt pozitīvai (> 0).')
+    return round(x, 2)
+
+def resolve_price_interactive(name: str) -> float:
+    '''
+    Nosaka cenu:
+      - ja cena atrodas prices.json: piedāvā [A]kceptēt / [M]ainīt
+      - ja nav: prasa ievadīt cenu un saglabā datubāzē
+
+    Returns:
+        float: cena par vienību
+    '''
+
+    existing = get_price(name)
+    if existing is not None:
+        print(f'Atrasta cena: {existing:.2f} EUR/gab.')
+        choice = input('[A]kceptēt / [M]ainīt? > ').strip().lower()
+        if choice == 'm':
+            while True:
+                try:
+                    new_price = parse_positive_float(input('Jaunā cena: > ').strip())
+                    break
+                except ValueError as e:
+                    print(f'Kļūda: {e}')
+            set_price(name, new_price)
+            print(f'Cena atjaunināta: {name} -> {new_price:.2f} EUR')
+            return new_price
+        # fefaults: akceptē (arī, ja ievada ko citu)
+        return float(existing)
+    print('Cena nav zināma.')
+    while True:
+        try:
+            price = parse_positive_float(input('Ievadi cenu: ').strip())
+            break
+        except ValueError as e:
+            print(f'Kļūda: {e}')
+    set_price(name, price)
+    print(f'Cena saglabāta: {name} ({price:.2f} EUR)')
+    return price
 
 def cmd_add(argv: list[str]) -> None:
     '''
@@ -32,10 +87,10 @@ def cmd_add(argv: list[str]) -> None:
             Kļūda: cena jābūt pozitīvam skaitlim.
     '''
 
-    if len(argv) != 5:
-        print('Kļūda: add nepieciešami 3 argumenti — nosaukums, daudzums un cena.')
+    if len(argv) not in (4, 5):
+        print('Kļūda: add sintakse: add <Nosaukums> <daudzums> [cena].')
         return
-    name = argv[2].split().capitalize()
+    name = " ".join(argv[2].split()).capitalize()
     try:
         qty = int(argv[3])
         if qty <=0:
@@ -43,13 +98,15 @@ def cmd_add(argv: list[str]) -> None:
     except ValueError:
         print('Kļūda, daudzums ir vesels pozitīvs skaitlis.')
         return
-    try:
-        price = float(argv[4])
-        if price <= 0:
-            raise ValueError
-    except ValueError:
-        print('Kļūda: cena jābūt pozitīvam skaitlim.')
-        return
+    if len(argv)==5:
+        try:
+            price = parse_positive_float(argv[4])
+        except ValueError as e:
+            print(f'Kļūda: {e}')
+            return
+        set_price(name, price) #atceras cenu db
+    else:
+        price = resolve_price_interactive(name)
     items = load_list()
     item = {
         'name': name,
