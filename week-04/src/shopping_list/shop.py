@@ -7,19 +7,23 @@ def how_usage() -> None:
     Izdrukā programmas lietošanas instrukciju.
     '''
     print('Lietošana:')
-    print('python shop.py add <Nosaukums> <Cena>')
+    print('python shop.py add <Nosaukums> <Daudzums> [Cena]')
     print('python shop.py list')
     print('python shop.py total')
     print('python shop.py clear')
 
 def parse_positive_float(value: str) -> float:
     '''
-    Pārvērš tekstu par pozitīvu float (cenu).
+    Ievadīto pārvērš par pozitīvu cenu (float) un noapaļo līdz simtdaļām.
+
+    Args:
+        value (str): Teksts, ko mēģina pārvērst par skaitli (piem., "1.25").
+
+    Returns:
+        float: Pozitīva cena, noapaļota līdz 2 zīmēm aiz komata.
 
     Raises:
-        ValueError:
-            Cenai jābūt skaitlim (piem., 1.25).
-            Cenai jābūt pozitīvai (> 0).
+        ValueError: Ja ievade nav skaitlis vai ir <= 0.
     '''
 
     try:
@@ -32,10 +36,17 @@ def parse_positive_float(value: str) -> float:
 
 def resolve_price_interactive(name: str) -> float:
     '''
-    Nosaka cenu:
-      - ja cena atrodas prices.json: piedāvā [A]kceptēt / [M]ainīt
-      - ja nav: prasa ievadīt cenu un saglabā datubāzē
+    Nosaka cenu izmantojot prices.json datubāzi
+      1) ja cena atrodas prices.json:
+        - parāda atrasto cenu
+        - piedāvā [A]kceptēt / [M]ainīt
+        - ja maina, prasa jaunu cenu un saglabā datubāzē
+      2) ja nav: 
+        - prasa ievadīt cenu
+        - saglabā datubāzē
 
+    Args:
+        name (str): Produkta nosaukums (atslēga cenu datubāzē).
     Returns:
         float: cena par vienību
     '''
@@ -69,14 +80,25 @@ def resolve_price_interactive(name: str) -> float:
 
 def cmd_add(argv: list[str]) -> None:
     '''
-    Pievieno produktu ar daudzumu un cenu par vienību.
+    Pievieno produktu sarakstam shoping.json, prices.json atbalsts.
 
+    Komandas sintakse:
+        python shop.py add <Nosaukums> <Daudzums> [Cena]
+
+    Uzvedība:
+        1) Ja cena ir argumentā:
+            - pārbauda, ka cena ir pozitīva
+            - saglabā/atjaunina cenu prices.json
+        2) Ja cena nav argumentā:
+            - mēģina atrast cenu prices.json
+            - ja nav, prasa ievadīt cenu un saglabā
+            - ja ir, piedāvā [A]/[M]
+    
     Args:
-        argv (list[str]):
-            Komandrindas argumenti.
-            argv[2] - produkta nosaukums (str)
-            argv[3] - daudzums (int, >0)
-            argv[4] - daudzums (float, > 0)
+        argv (list[str]): Komandrindas argumenti.
+            argv[3] - produkta nosaukums (str)
+            argv[4] - daudzums (int, >0)
+            argv[5] - cena (float, > 0)
 
     Returns:
         None
@@ -84,7 +106,6 @@ def cmd_add(argv: list[str]) -> None:
     Raises:
         ValueError:
             Kļūda, daudzums ir vesels pozitīvs skaitlis.
-            Kļūda: cena jābūt pozitīvam skaitlim.
     '''
 
     if len(argv) not in (4, 5):
