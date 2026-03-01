@@ -16,13 +16,17 @@ def load_prices() -> dict[str, float]:
 
     Returns:
         dict[str, float]: preces nosaukums -> cena par vienību.
-        Ja fails neeksistē, atgriez {}.
+        Ja fails neeksistē vai bojāts, atgriez {}.
     '''
 
     if not os.path.exists(PRICES_FILE):
         return {}
-    with open(PRICES_FILE, 'r', encoding='utf-8') as f:
-        raw = json.load(f)
+    try:
+        with open(PRICES_FILE, 'r', encoding='utf-8') as f:
+            raw = json.load(f)
+    except json.JSONDecodeError:
+        print('Kļūda: prices.json ir bojāts. Tiks izmantota tukša cenu datubāze.')
+        return {}
     normalized = {}
     for k, v in raw.items():
         normalized[normalize_key(k)] = round(float(v), 2)
@@ -85,15 +89,17 @@ def load_list() -> list[dict[str, float]]:
         list[dict[str, float]]:
             Saraksts ar produktiem formātā:
             {'name': str, 'price': float}
-
-            Ja fails neeksistē, atgriež [].
+            Ja fails neeksistē vai bojāts, atgriež [].
     '''
     
     if not os.path.exists(SHOPPING_FILE):
         return []
-
-    with open(SHOPPING_FILE, 'r', encoding='utf-8') as f:
-        return json.load(f)
+    try:
+        with open(SHOPPING_FILE, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except json.JSONDecodeError:
+        print('Kļūda: shopping.json ir bojāts. Tiks izmantots tukšs saraksts.')
+        return []
 
 
 def save_list(items: list[dict[str, float]]) -> None:
